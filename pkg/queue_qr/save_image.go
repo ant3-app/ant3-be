@@ -38,21 +38,20 @@ func serviceAccount(credentialFile string) *http.Client ***REMOVED***
 	return client
 ***REMOVED***
 
-func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMOVED***
+func createFile(client *http.Client, imgByte []byte, fileName string) (*drive.File, error)***REMOVED***
 	service, err := drive.NewService(context.Background(), option.WithHTTPClient(client))
 	if err != nil ***REMOVED***
 		log.Fatalf("Unable to create Drive service: %v", err)
 	***REMOVED***
 
-	filename := "my_qr_code.jpeg"
 	gdriveFolderId := viper.Get("GDRIVE_FOLDER_ID").(string)
 
 	img := bytes.NewReader(imgByte)
 	if err != nil ***REMOVED***
-		log.Fatalf("error opening %q: %v", filename, err)
+		log.Fatalf("error opening %q: %v", fileName, err)
 	***REMOVED***
 	driveFile, err := service.Files.
-		Create(&drive.File***REMOVED***Name: filename, Parents: []string***REMOVED***gdriveFolderId***REMOVED******REMOVED***).
+		Create(&drive.File***REMOVED***Name: fileName, Parents: []string***REMOVED***gdriveFolderId***REMOVED******REMOVED***).
 		Media(img).
 		Do()
 	if(err!=nil) ***REMOVED***
@@ -62,8 +61,8 @@ func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMO
 	return driveFile, err
 ***REMOVED***
 
-func SaveImageToGDrive(imgByte []byte) (string, error) ***REMOVED***
+func SaveImageToGDrive(imgByte []byte, fileName string) (string, error) ***REMOVED***
 	client := serviceAccount("client_secret_gdrive.json")
-	driveFile, err := createFile(client, imgByte)
+	driveFile, err := createFile(client, imgByte, fileName)
 	return driveFile.Id, err
 ***REMOVED***

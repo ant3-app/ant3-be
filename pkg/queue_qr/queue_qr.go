@@ -14,7 +14,7 @@ func testGet(c *gin.Context) ***REMOVED***
 		***REMOVED***)
 	***REMOVED***
 	
-	fileId, err := SaveImageToGDrive(png)
+	fileId, err := SaveImageToGDrive(png, "table_qr_code.png")
 	
 	if err != nil ***REMOVED***
 		c.JSON(500, gin.H***REMOVED***
