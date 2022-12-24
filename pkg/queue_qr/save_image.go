@@ -9,13 +9,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/spf13/viper"
 	"golang.org/x/oauth2/google"
 	"golang.org/x/oauth2/jwt"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/option"
 )
 
-func ServiceAccount(credentialFile string) *http.Client ***REMOVED***
+func serviceAccount(credentialFile string) *http.Client ***REMOVED***
 	cred, err := ioutil.ReadFile(credentialFile)
 	if err != nil ***REMOVED***
 		log.Fatal(err)
@@ -44,12 +45,16 @@ func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMO
 	***REMOVED***
 
 	filename := "my_qr_code.jpeg"
+	gdriveFolderId := viper.Get("GDRIVE_FOLDER_ID").(string)
 
 	img := bytes.NewReader(imgByte)
 	if err != nil ***REMOVED***
 		log.Fatalf("error opening %q: %v", filename, err)
 	***REMOVED***
-	driveFile, err := service.Files.Create(&drive.File***REMOVED***Name: filename, Parents: []string***REMOVED***"id"***REMOVED******REMOVED***).Media(img).Do()
+	driveFile, err := service.Files.
+		Create(&drive.File***REMOVED***Name: filename, Parents: []string***REMOVED***gdriveFolderId***REMOVED******REMOVED***).
+		Media(img).
+		Do()
 	if(err!=nil) ***REMOVED***
 		fmt.Println(err, "error ma bro")
 	***REMOVED***
@@ -58,6 +63,6 @@ func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMO
 ***REMOVED***
 
 func SaveImageToGDrive(imgByte []byte) (*drive.File, error) ***REMOVED***
-	client := ServiceAccount("client_secret_gdrive.json")
+	client := serviceAccount("client_secret_gdrive.json")
 	return createFile(client, imgByte)
 ***REMOVED***
