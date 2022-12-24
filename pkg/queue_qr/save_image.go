@@ -38,7 +38,6 @@ func ServiceAccount(credentialFile string) *http.Client ***REMOVED***
 ***REMOVED***
 
 func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMOVED***
-	// service, err := drive.New(client)
 	service, err := drive.NewService(context.Background(), option.WithHTTPClient(client))
 	if err != nil ***REMOVED***
 		log.Fatalf("Unable to create Drive service: %v", err)
