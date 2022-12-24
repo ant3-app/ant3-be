@@ -14,7 +14,7 @@ func testGet(c *gin.Context) ***REMOVED***
 		***REMOVED***)
 	***REMOVED***
 	
-	driveFile, err := SaveImageToGDrive(png)
+	fileId, err := SaveImageToGDrive(png)
 	
 	if err != nil ***REMOVED***
 		c.JSON(500, gin.H***REMOVED***
@@ -26,7 +26,7 @@ func testGet(c *gin.Context) ***REMOVED***
 	
 	c.JSON(200, gin.H***REMOVED***
 		"message": "success to get QR Code",
-		"file_id": driveFile.Id,
+		"file_id": fileId,
 	***REMOVED***)
 ***REMOVED***
 

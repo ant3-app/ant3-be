@@ -62,7 +62,8 @@ func createFile(client *http.Client, imgByte []byte) (*drive.File, error)***REMO
 	return driveFile, err
 ***REMOVED***
 
-func SaveImageToGDrive(imgByte []byte) (*drive.File, error) ***REMOVED***
+func SaveImageToGDrive(imgByte []byte) (string, error) ***REMOVED***
 	client := serviceAccount("client_secret_gdrive.json")
-	return createFile(client, imgByte)
+	driveFile, err := createFile(client, imgByte)
+	return driveFile.Id, err
 ***REMOVED***
