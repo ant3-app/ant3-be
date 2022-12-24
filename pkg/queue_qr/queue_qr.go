@@ -1,28 +1,39 @@
 package queueqr
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	qrcode "github.com/skip2/go-qrcode"
 )
 
-func testGet(c *gin.Context) ***REMOVED***
+type qrTableRequest struct ***REMOVED***
+	MerchantId string `json:merchantId`
+	TableNumber int `json:tableNumber`
+***REMOVED***
+
+func handleErrResp(err error, c *gin.Context) ***REMOVED***
+	if(err != nil) ***REMOVED***
+		c.JSON(500, gin.H***REMOVED***
+			"message": "Something went wrong",
+			"error": err,
+		***REMOVED***)
+	***REMOVED***
+***REMOVED***
+
+func createQRTable(c *gin.Context) ***REMOVED***
+	request := qrTableRequest***REMOVED******REMOVED***
+	var err = c.BindJSON(&request)
+	handleErrResp(err, c)
+	
 	png, err := qrcode.Encode("https://facebook.com", qrcode.High, 256)
-	if err != nil ***REMOVED***
-		c.JSON(500, gin.H***REMOVED***
-			"message": "Something went wrong",
-			"error": err,
-		***REMOVED***)
-	***REMOVED***
+	handleErrResp(err, c)
 	
-	fileId, err := SaveImageToGDrive(png, "table_qr_code.png")
+	fmt.Printf("request: %#v\n", request)
+	var fileName = fmt.Sprintf("%s_%d_table_qr_code", request.MerchantId, request.TableNumber)
 	
-	if err != nil ***REMOVED***
-		c.JSON(500, gin.H***REMOVED***
-			"message": "Something went wrong",
-			"error": err,
-		***REMOVED***)
-	***REMOVED***
-	
+	fileId, err := SaveImageToGDrive(png, fileName)
+	handleErrResp(err, c)
 	
 	c.JSON(200, gin.H***REMOVED***
 		"message": "success to get QR Code",
@@ -32,6 +43,6 @@ func testGet(c *gin.Context) ***REMOVED***
 
 func QueueQR() ***REMOVED***
 	r := gin.Default()
-	r.GET("/test", testGet)
+	r.POST("/qr-table", createQRTable)
 	r.Run()
 ***REMOVED***
