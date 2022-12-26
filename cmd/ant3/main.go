@@ -1,6 +1,7 @@
 package main
 
 import (
+	models "ant3/models"
 	queueqr "ant3/pkg/queue_qr"
 	"log"
 
@@ -18,5 +19,6 @@ func initLoadEnv() ***REMOVED***
 
 func main() ***REMOVED***
 	initLoadEnv()
+	models.ConnectDatabase()
 	queueqr.QueueQR()
 ***REMOVED***

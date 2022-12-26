@@ -1,10 +1,12 @@
 package queueqr
 
 import (
+	"ant3/models"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 	qrcode "github.com/skip2/go-qrcode"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type qrTableRequest struct ***REMOVED***
@@ -26,7 +28,7 @@ func createQRTable(c *gin.Context) ***REMOVED***
 	var err = c.BindJSON(&request)
 	handleErrResp(err, c)
 	
-	png, err := qrcode.Encode("https://facebook.com", qrcode.High, 256)
+	png, err := qrcode.Encode("https://wa.me/6285723087803?text=Love%20You%20Sayang", qrcode.High, 256)
 	handleErrResp(err, c)
 	
 	fmt.Printf("request: %#v\n", request)
@@ -34,10 +36,21 @@ func createQRTable(c *gin.Context) ***REMOVED***
 	
 	fileId, err := SaveImageToGDrive(png, fileName)
 	handleErrResp(err, c)
+	oid, err := primitive.ObjectIDFromHex(request.MerchantId)
+	
+	queueQr := &models.QueueQR***REMOVED***
+		MerchantId: oid,
+		Number: int32(request.TableNumber),
+		FileId: fileId,
+	***REMOVED***
+	
+	fmt.Printf("trying to save with %#v\n", queueQr)
+	Save(queueQr)
 	
 	c.JSON(200, gin.H***REMOVED***
 		"message": "success to get QR Code",
 		"file_id": fileId,
+		"aneh": oid,
 	***REMOVED***)
 ***REMOVED***
 
