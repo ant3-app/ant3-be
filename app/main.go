@@ -1,8 +1,8 @@
 package main
 
 import (
-	models "ant3/models"
-	queueqr "ant3/pkg/queue_qr"
+	mongo "ant3/app/config/mongo"
+	controller "ant3/app/queue_qr/controller"
 	"log"
 
 	"github.com/spf13/viper"
@@ -19,6 +19,6 @@ func initLoadEnv() ***REMOVED***
 
 func main() ***REMOVED***
 	initLoadEnv()
-	models.ConnectDatabase()
-	queueqr.QueueQR()
+	mongo.ConnectDatabase()
+	controller.QueueQR()
 ***REMOVED***

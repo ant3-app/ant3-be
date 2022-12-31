@@ -1,7 +1,9 @@
 package queueqr
 
 import (
-	"ant3/models"
+	"ant3/app/queue_qr/models"
+	repository "ant3/app/queue_qr/repository"
+	service "ant3/app/queue_qr/service"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -34,23 +36,23 @@ func createQRTable(c *gin.Context) ***REMOVED***
 	fmt.Printf("request: %#v\n", request)
 	var fileName = fmt.Sprintf("%s_%d_table_qr_code", request.MerchantId, request.TableNumber)
 	
-	fileId, err := SaveImageToGDrive(png, fileName)
+	fileId, err := service.SaveImageToGDrive(png, fileName)
 	handleErrResp(err, c)
 	oid, err := primitive.ObjectIDFromHex(request.MerchantId)
 	
-	queueQr := &models.QueueQR***REMOVED***
+	var queueQr *models.QueueQR = &models.QueueQR***REMOVED***
 		MerchantId: oid,
 		Number: int32(request.TableNumber),
 		FileId: fileId,
 	***REMOVED***
 	
 	fmt.Printf("trying to save with %#v\n", queueQr)
-	Save(queueQr)
+	repository.Save(queueQr)
 	
 	c.JSON(200, gin.H***REMOVED***
 		"message": "success to get QR Code",
-		"file_id": fileId,
-		"aneh": oid,
+		"fileId": fileId,
+		"merchantId": oid,
 	***REMOVED***)
 ***REMOVED***
 

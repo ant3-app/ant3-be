@@ -1,4 +1,4 @@
-package queueqr
+package service
 
 import (
 	"bytes"
