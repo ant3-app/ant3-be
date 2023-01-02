@@ -14,7 +14,7 @@ type MongoTimeStamp struct ***REMOVED***
 ***REMOVED***
 
 type QueueQR struct ***REMOVED***
-	// Id primitive.ObjectID `bson:"_id"`
+	Id primitive.ObjectID `bson:"_id"`
 	MerchantId primitive.ObjectID `bson:"merchantId"`
 	Number int32 `bson:"number"`
 	FileId string `bson:"fileId"`

@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	qrcode "github.com/skip2/go-qrcode"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -30,7 +31,10 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 	var err = c.BindJSON(&request)
 	handleErrResp(err, c)
 	
-	png, err := qrcode.Encode("https://wa.me/6285723087803?text=Love%20You%20Sayang", qrcode.High, 256)
+	qrTableId := primitive.NewObjectID()
+	qrTableWebLink := fmt.Sprintf("%s/qr-table/%s", viper.Get("ANT3_WEB_URL"), qrTableId.Hex())
+	
+	png, err := qrcode.Encode(qrTableWebLink, qrcode.High, 256)
 	handleErrResp(err, c)
 	
 	fmt.Printf("request: %#v\n", request)
@@ -44,6 +48,7 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 		MerchantId: oid,
 		Number: int32(request.TableNumber),
 		FileId: fileId,
+		Id: qrTableId,
 	***REMOVED***
 	
 	fmt.Printf("trying to save with %#v\n", queueQr)
