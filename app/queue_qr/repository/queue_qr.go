@@ -11,5 +11,4 @@ func Save(queueQr *models.QueueQR) ***REMOVED***
 
 	collection.InsertOne(context.Background(), queueQr)
 	
-	println("success to insert?")
 ***REMOVED***
