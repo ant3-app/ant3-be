@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -23,7 +22,6 @@ type QueueQR struct ***REMOVED***
 ***REMOVED***
 
 func (u *QueueQR) MarshalBSON() ([]byte, error) ***REMOVED***
-	fmt.Println("wewewewewewe aneeh")
 	if u.CreatedAt.IsZero() ***REMOVED***
 			u.CreatedAt = time.Now()
 	***REMOVED***
