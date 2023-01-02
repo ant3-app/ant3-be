@@ -25,7 +25,7 @@ func handleErrResp(err error, c *gin.Context) ***REMOVED***
 	***REMOVED***
 ***REMOVED***
 
-func createQRTable(c *gin.Context) ***REMOVED***
+func CreateQRTable(c *gin.Context) ***REMOVED***
 	request := qrTableRequest***REMOVED******REMOVED***
 	var err = c.BindJSON(&request)
 	handleErrResp(err, c)
@@ -54,10 +54,4 @@ func createQRTable(c *gin.Context) ***REMOVED***
 		"fileId": fileId,
 		"merchantId": oid,
 	***REMOVED***)
-***REMOVED***
-
-func QueueQR() ***REMOVED***
-	r := gin.Default()
-	r.POST("/qr-table", createQRTable)
-	r.Run()
 ***REMOVED***

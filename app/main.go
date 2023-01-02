@@ -2,9 +2,10 @@ package main
 
 import (
 	mongo "ant3/app/config/mongo"
-	controller "ant3/app/queue_qr/controller"
+	queue_qr "ant3/app/queue_qr/controller"
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
 
@@ -20,5 +21,7 @@ func initLoadEnv() ***REMOVED***
 func main() ***REMOVED***
 	initLoadEnv()
 	mongo.ConnectDatabase()
-	controller.QueueQR()
+	r := gin.Default()
+	r.POST("/qr-table", queue_qr.CreateQRTable)
+	r.Run()
 ***REMOVED***
