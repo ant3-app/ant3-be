@@ -1,6 +1,7 @@
 package main
 
 import (
+	fb "ant3/app/config/firebase"
 	mongo "ant3/app/config/mongo"
 	queue_qr "ant3/app/queue_qr/controller"
 	"log"
@@ -20,8 +21,13 @@ func initLoadEnv() ***REMOVED***
 
 func main() ***REMOVED***
 	initLoadEnv()
+	
 	mongo.ConnectDatabase()
+	fb.InitClient()
+	
 	r := gin.Default()
 	r.POST("/qr-table", queue_qr.CreateQRTable)
+	r.GET("/qr-table/:id", queue_qr.GetQRTableQueueInfo)
+	r.POST("qr-table/enqueue", queue_qr.InsertQRTableToQueue)
 	r.Run()
 ***REMOVED***

@@ -1,4 +1,4 @@
-package queueqr
+package controller
 
 import (
 	"ant3/app/queue_qr/models"
@@ -11,11 +11,6 @@ import (
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-type qrTableRequest struct ***REMOVED***
-	MerchantId string `json:merchantId`
-	TableNumber int `json:tableNumber`
-***REMOVED***
 
 func handleErrResp(err error, c *gin.Context) ***REMOVED***
 	if(err != nil) ***REMOVED***
@@ -38,15 +33,16 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 	handleErrResp(err, c)
 	
 	fmt.Printf("request: %#v\n", request)
-	var fileName = fmt.Sprintf("%s_%d_table_qr_code", request.MerchantId, request.TableNumber)
+	var fileName = fmt.Sprintf("%s_%d_table_qr_code", request.MerchantId, request.TableName)
 	
 	fileId, err := service.SaveImageToGDrive(png, fileName)
 	handleErrResp(err, c)
 	oid, err := primitive.ObjectIDFromHex(request.MerchantId)
+	handleErrResp(err, c)
 	
 	var queueQr *models.QueueQR = &models.QueueQR***REMOVED***
 		MerchantId: oid,
-		Number: int32(request.TableNumber),
+		Name: request.TableName,
 		FileId: fileId,
 		Id: qrTableId,
 	***REMOVED***
@@ -59,4 +55,17 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 		"fileId": fileId,
 		"merchantId": oid,
 	***REMOVED***)
+***REMOVED***
+
+func GetQRTableQueueInfo(c *gin.Context) ***REMOVED***
+	// qrTable := c.Param("id")
+	
+***REMOVED***
+
+func InsertQRTableToQueue(c *gin.Context) ***REMOVED***
+	request := queueTableRequest***REMOVED******REMOVED***
+	var err = c.BindJSON(&request)
+	handleErrResp(err, c)
+	
+	service.AddQRTableToQueue(request.QueueQrId)
 ***REMOVED***
