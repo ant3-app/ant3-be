@@ -12,11 +12,11 @@ import (
 	"github.com/google/uuid"
 )
 
-func AddQRTableToQueue(queueQrId string) (error) ***REMOVED***
+func AddQRTableToQueue(queueQrId string) (*string, error) ***REMOVED***
 	queueQr, err := repository.GetOne(queueQrId)
 	if(err != nil) ***REMOVED***
-		fmt.Println(err, "[AddQRTableToQueue] error when get queue QR Data")
-		return err
+		fmt.Println(err.Error(), "[AddQRTableToQueue] error when get queue QR Data")
+		return nil, err
 	***REMOVED***
 	
 	now := time.Now().UTC()
@@ -29,15 +29,14 @@ func AddQRTableToQueue(queueQrId string) (error) ***REMOVED***
 		QueueQR: *queueQr,
 	***REMOVED***	
 	
-	// fmt.Printf("response queueQR: %#v", queueTable)
+	fmt.Printf("response queueTable: %#v", queueTable)
 	
 	ref := fb.Client.NewRef("queue_table")
 	
 	result, err := ref.Push(context.Background(), queueTable)
 	if(err != nil) ***REMOVED***
 		fmt.Println(err, "[AddQRTableToQueue] error when insert to firebase")
-		return err
+		return nil, err
 	***REMOVED***
-	var _ = result
-	return nil
+	return &result.Key, nil
 ***REMOVED***

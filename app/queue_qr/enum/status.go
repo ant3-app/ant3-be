@@ -1,11 +1,7 @@
 package enum
 
-type QUEUE_STATUS int
+type QUEUE_STATUS string
 const (
-	PENDING QUEUE_STATUS = iota
-	RESOLVED 
+	PENDING QUEUE_STATUS = "pending"
+	RESOLVED QUEUE_STATUS = "resolved"
 )
-
-func (status QUEUE_STATUS) String() string ***REMOVED***
-	return []string***REMOVED***"pending", "resolved"***REMOVED***[status]
-***REMOVED***

@@ -4,6 +4,7 @@ import (
 	mongo "ant3/app/config/mongo"
 	"ant3/app/queue_qr/models"
 	"context"
+	"errors"
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -28,12 +29,16 @@ func GetOne(queueQrId string) (*models.QueueQrDTO, error) ***REMOVED***
 	collection := mongo.DB.Collection("queue_qr")
 	fmt.Println("[GetOne] mongo collection with id:", queueQrId)
 	id, err := primitive.ObjectIDFromHex(queueQrId)
+	
 	if(err != nil) ***REMOVED***
-		fmt.Println(err, "[GetOne] error when get the data from mongo")
+		fmt.Println(err.Error(), "[GetOne] error when get the data from mongo")
 		return nil, err
 	***REMOVED***
 	res := collection.FindOne(context.Background(), bson.M***REMOVED***"_id": id***REMOVED***)
 	var queueQr models.QueueQrDTO
 	res.Decode(&queueQr)
+	if(queueQr.Id == "") ***REMOVED***
+		return nil, errors.New("data not found")
+	***REMOVED***
 	return &queueQr, nil
 ***REMOVED***  
