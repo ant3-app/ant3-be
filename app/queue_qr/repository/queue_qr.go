@@ -13,11 +13,15 @@ import (
 
 // var collection *mongodriver.Collection
 
-func Save(queueQr *models.QueueQR) ***REMOVED***
+func Save(queueQr *models.QueueQR) (*string, error) ***REMOVED***
 	collection := mongo.DB.Collection("queue_qr")
 
-	collection.InsertOne(context.Background(), queueQr)
-	
+	res, err := collection.InsertOne(context.Background(), queueQr)
+	if (err != nil) ***REMOVED***
+		return nil, err
+	***REMOVED***
+	id := res.InsertedID.(primitive.ObjectID).Hex()
+	return &id, nil
 ***REMOVED***
 
 func GetOne(queueQrId string) (*models.QueueQrDTO, error) ***REMOVED***

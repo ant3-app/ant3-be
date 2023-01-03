@@ -29,7 +29,7 @@ func AddQRTableToQueue(queueQrId string) (error) ***REMOVED***
 		QueueQR: *queueQr,
 	***REMOVED***	
 	
-	fmt.Printf("response queueQR: %#v", *queueQr)
+	// fmt.Printf("response queueQR: %#v", queueTable)
 	
 	ref := fb.Client.NewRef("queue_table")
 	
