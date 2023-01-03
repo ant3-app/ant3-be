@@ -32,6 +32,7 @@ func AddQRTableToQueue(queueQrId string) (*string, error) ***REMOVED***
 	fmt.Printf("response queueTable: %#v", queueTable)
 	
 	ref := fb.Client.NewRef("queue_table")
+	// ref.Child("queue_table").Path("QueueQr")
 	
 	result, err := ref.Push(context.Background(), queueTable)
 	if(err != nil) ***REMOVED***

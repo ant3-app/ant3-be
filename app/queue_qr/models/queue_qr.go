@@ -22,12 +22,12 @@ type QueueQR struct ***REMOVED***
 ***REMOVED***
 
 type QueueQrDTO struct ***REMOVED***
-	Id string `bson:"_id"`
-	MerchantId string
-	Name string 
-	FileId string
-	CreatedAt time.Time 
-	UpdatedAt time.Time 
+	Id string `bson:"_id" json:"id"`
+	MerchantId string `json:"merchantId"`
+	Name string `json:"name"`
+	FileId string `json:"fileId"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 ***REMOVED***
 
 func (u *QueueQR) MarshalBSON() ([]byte, error) ***REMOVED***
