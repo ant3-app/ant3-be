@@ -12,7 +12,7 @@ type MongoTimeStamp struct ***REMOVED***
 	UpdatedAt time.Time `bson:"updatedAt"`
 ***REMOVED***
 
-type QueueQR struct ***REMOVED***
+type TableQr struct ***REMOVED***
 	Id primitive.ObjectID `bson:"_id"`
 	MerchantId primitive.ObjectID `bson:"merchantId"`
 	Name string `bson:"name"`
@@ -21,7 +21,7 @@ type QueueQR struct ***REMOVED***
 	UpdatedAt time.Time `bson:"updatedAt"`
 ***REMOVED***
 
-type QueueQrDTO struct ***REMOVED***
+type TableQrDTO struct ***REMOVED***
 	Id string `bson:"_id" json:"id"`
 	MerchantId string `json:"merchantId"`
 	Name string `json:"name"`
@@ -30,13 +30,13 @@ type QueueQrDTO struct ***REMOVED***
 	UpdatedAt time.Time `json:"updatedAt"`
 ***REMOVED***
 
-func (u *QueueQR) MarshalBSON() ([]byte, error) ***REMOVED***
+func (u *TableQr) MarshalBSON() ([]byte, error) ***REMOVED***
 	if u.CreatedAt.IsZero() ***REMOVED***
 			u.CreatedAt = time.Now()
 	***REMOVED***
 	u.UpdatedAt = time.Now()
 	
-	type my QueueQR
+	type my TableQr
 	return bson.Marshal((*my)(u))
 ***REMOVED***
 

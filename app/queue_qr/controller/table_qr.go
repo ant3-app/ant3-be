@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateQRTable(c *gin.Context) ***REMOVED***
-	request := qrTableRequest***REMOVED******REMOVED***
+func CreatetableQr(c *gin.Context) ***REMOVED***
+	request := tableQrRequest***REMOVED******REMOVED***
 	var err = c.BindJSON(&request)
 	if(err != nil) ***REMOVED***
 		c.AbortWithStatusJSON(500, gin.H***REMOVED***
@@ -17,7 +17,7 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 		return
 	***REMOVED***
 	
-	res, err := service.SaveQrTable(service.SaveQrTableRequest***REMOVED***
+	res, err := service.SaveTableQr(service.SaveTableQrRequest***REMOVED***
 		MerchantId: request.MerchantId,
 		TableName: request.TableName,
 	***REMOVED***)
@@ -37,12 +37,12 @@ func CreateQRTable(c *gin.Context) ***REMOVED***
 	***REMOVED***)
 ***REMOVED***
 
-func GetQRTableQueueInfo(c *gin.Context) ***REMOVED***
-	// qrTable := c.Param("id")
+func GetTableQrQueueInfo(c *gin.Context) ***REMOVED***
+	// tableQr := c.Param("id")
 	
 ***REMOVED***
 
-func InsertQRTableToQueue(c *gin.Context) ***REMOVED***
+func InsertTableQrToQueue(c *gin.Context) ***REMOVED***
 	request := queueTableRequest***REMOVED******REMOVED***
 	var err = c.BindJSON(&request)
 	if(err != nil) ***REMOVED***
@@ -53,7 +53,7 @@ func InsertQRTableToQueue(c *gin.Context) ***REMOVED***
 		return
 	***REMOVED***
 	
-	key, err := service.AddQRTableToQueue(request.QueueQrId)
+	key, err := service.AddTableQrToQueue(request.QueueQrId)
 	if(err != nil) ***REMOVED***
 		c.AbortWithStatusJSON(400, gin.H***REMOVED***
 			"message": "Something went wrong",

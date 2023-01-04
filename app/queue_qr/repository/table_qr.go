@@ -14,8 +14,8 @@ import (
 
 // var collection *mongodriver.Collection
 
-func Save(queueQr *models.QueueQR) (*string, error) ***REMOVED***
-	collection := mongo.DB.Collection("queue_qr")
+func Save(queueQr *models.TableQr) (*string, error) ***REMOVED***
+	collection := mongo.DB.Collection("table_qr")
 
 	res, err := collection.InsertOne(context.Background(), queueQr)
 	if (err != nil) ***REMOVED***
@@ -25,8 +25,8 @@ func Save(queueQr *models.QueueQR) (*string, error) ***REMOVED***
 	return &id, nil
 ***REMOVED***
 
-func GetOne(queueQrId string) (*models.QueueQrDTO, error) ***REMOVED***
-	collection := mongo.DB.Collection("queue_qr")
+func GetOne(queueQrId string) (*models.TableQrDTO, error) ***REMOVED***
+	collection := mongo.DB.Collection("table_qr")
 	fmt.Println("[GetOne] mongo collection with id:", queueQrId)
 	id, err := primitive.ObjectIDFromHex(queueQrId)
 	
@@ -35,7 +35,7 @@ func GetOne(queueQrId string) (*models.QueueQrDTO, error) ***REMOVED***
 		return nil, err
 	***REMOVED***
 	res := collection.FindOne(context.Background(), bson.M***REMOVED***"_id": id***REMOVED***)
-	var queueQr models.QueueQrDTO
+	var queueQr models.TableQrDTO
 	res.Decode(&queueQr)
 	if(queueQr.Id == "") ***REMOVED***
 		return nil, errors.New("data not found")

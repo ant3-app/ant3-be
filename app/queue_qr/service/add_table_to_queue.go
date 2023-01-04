@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func AddQRTableToQueue(queueQrId string) (*string, error) ***REMOVED***
+func AddTableQrToQueue(queueQrId string) (*string, error) ***REMOVED***
 	queueQr, err := repository.GetOne(queueQrId)
 	if(err != nil) ***REMOVED***
 		fmt.Println(err.Error(), "[AddQRTableToQueue] error when get queue QR Data")

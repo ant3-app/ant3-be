@@ -1,6 +1,6 @@
 package controller
 
-type qrTableRequest struct ***REMOVED***
+type tableQrRequest struct ***REMOVED***
 	MerchantId string `json:"merchantId"`
 	TableName string `json:"tableName"`
 ***REMOVED***

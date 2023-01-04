@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func SaveQrTable(request SaveQrTableRequest) (*SaveQrTableResponse, error) ***REMOVED***
+func SaveTableQr(request SaveTableQrRequest) (*SaveTableQrResponse, error) ***REMOVED***
 	qrTableId := primitive.NewObjectID()
 	qrTableWebLink := fmt.Sprintf("%s/qr-table/%s", viper.Get("ANT3_WEB_URL"), qrTableId.Hex())
 	
@@ -21,7 +21,7 @@ func SaveQrTable(request SaveQrTableRequest) (*SaveQrTableResponse, error) ***RE
 	***REMOVED***
 	
 	fmt.Printf("request: %#v\n", request)
-	var fileName = fmt.Sprintf("%s_%s_table_qr_code", request.MerchantId, request.TableName)
+	var fileName = fmt.Sprintf("%s_table_qr_code_%s", request.MerchantId, request.TableName)
 	
 	fileId, err := repository.SaveImageToGDrive(png, fileName)
 	if (err != nil) ***REMOVED***
@@ -38,7 +38,7 @@ func SaveQrTable(request SaveQrTableRequest) (*SaveQrTableResponse, error) ***RE
 		return nil, err
 	***REMOVED***
 	
-	var queueQr *models.QueueQR = &models.QueueQR***REMOVED***
+	var queueQr *models.TableQr = &models.TableQr***REMOVED***
 		MerchantId: merchatId,
 		Name: request.TableName,
 		FileId: fileId,
@@ -48,7 +48,7 @@ func SaveQrTable(request SaveQrTableRequest) (*SaveQrTableResponse, error) ***RE
 	fmt.Printf("trying to save with %#v\n", queueQr)
 	id, err := repository.Save(queueQr)
 	
-	return &SaveQrTableResponse***REMOVED***
+	return &SaveTableQrResponse***REMOVED***
 		Id: *id,
 		FileId: fileId,
 		MerchantId: merchatId.Hex(),
