@@ -5,6 +5,6 @@ type tableQrRequest struct ***REMOVED***
 	TableName string `json:"tableName"`
 ***REMOVED***
 
-type queueTableRequest struct ***REMOVED***
-	QueueQrId string `json:"queueQrId"`
+type tableQueueRequest struct ***REMOVED***
+	TableQrId string `json:"tableQrId"`
 ***REMOVED***

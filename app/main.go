@@ -28,6 +28,7 @@ func main() ***REMOVED***
 	r := gin.Default()
 	r.POST("/qr-table", queue_qr.CreatetableQr)
 	r.GET("/qr-table/:id", queue_qr.GetTableQrQueueInfo)
-	r.POST("qr-table/enqueue", queue_qr.InsertTableQrToQueue)
+	r.POST("qr-table/queue", queue_qr.InsertTableQrToQueue)
+	r.DELETE("qr-table/queue", queue_qr.RemoveTableQrFromQueue)
 	r.Run()
 ***REMOVED***
