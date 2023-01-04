@@ -19,14 +19,14 @@ func AddTableQrToQueue(queueQrId string) (*string, error) ***REMOVED***
 	
 	now := time.Now().UTC()
 	
-	var queueTable = models.QueueTable***REMOVED***
+	var queueTable = models.TableQueue***REMOVED***
 		CreatedAt: now,
 		UpdatedAt: now,
 	***REMOVED***	
 	
 	fmt.Printf("response queueTable: %#v\n", queueTable)
 	// Noted: try to validate using firebase rules
-	var existQueueQr models.QueueTable
+	var existQueueQr models.TableQueue
 	
 	ref := fb.Client.NewRef("queue_table")
 	myErr := ref.
@@ -39,7 +39,7 @@ func AddTableQrToQueue(queueQrId string) (*string, error) ***REMOVED***
 	
 	fmt.Printf("response existQueueQr: %#v\n", existQueueQr)
 	
-	if (existQueueQr != models.QueueTable***REMOVED******REMOVED***) ***REMOVED***
+	if (existQueueQr != models.TableQueue***REMOVED******REMOVED***) ***REMOVED***
 		return nil, errors.New("The " + queueQr.Id + " table is on the queue")
 	***REMOVED***
 	

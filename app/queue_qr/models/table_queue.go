@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type QueueTable struct ***REMOVED***
+type TableQueue struct ***REMOVED***
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 ***REMOVED***
