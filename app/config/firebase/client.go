@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	db "firebase.google.com/go/v4/db"
-	"github.com/spf13/viper"
+	firestore "cloud.google.com/go/firestore"
 )
 
-var Client *db.Client
+var Client *firestore.Client
 
 func InitClient() error ***REMOVED***
 	InitFirebase()
-	client, err := App.DatabaseWithURL(context.Background(), viper.GetString("FIREBASE_REALTIME_DATABASE"))
+	client, err := App.Firestore(context.Background())
 	if(err != nil) ***REMOVED***
 		fmt.Println(err, "[InitClient] error init firebase client")
 		return err

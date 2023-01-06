@@ -2,7 +2,6 @@ package service
 
 import (
 	fb "ant3/app/config/firebase"
-	"ant3/app/queue_qr/models"
 	"ant3/app/queue_qr/repository"
 	"context"
 	"errors"
@@ -19,33 +18,34 @@ func AddTableQrToQueue(tableQrId string) (*string, error) ***REMOVED***
 	
 	now := time.Now().UTC()
 	
-	var queueTable = models.TableQueue***REMOVED***
-		CreatedAt: now,
-		UpdatedAt: now,
-	***REMOVED***	
+	var queueTable =  map[string]interface***REMOVED******REMOVED*** ***REMOVED***
+		"createdAt": now,
+		"updatedAt": now,
+		"name": tableQr.Name,
+	***REMOVED***
 	
 	fmt.Printf("response queueTable: %#v\n", queueTable)
 	// Noted: try to validate using firebase rules
-	var existQueueQr models.TableQueue
 	
-	ref := fb.Client.NewRef("queue_table")
-	myErr := ref.
-		Child(tableQr.Id).
-		Get(context.Background(), &existQueueQr)
+	ref := fb.Client.Collection("merchant")
+	refQueue := ref.Doc(tableQr.MerchantId).Collection("queue")
+	doc, myErr := refQueue.Doc(tableQr.Id).Get(context.Background())
+	existingQueueQr := doc.Data()
+		
 		
 	if(myErr != nil) ***REMOVED***
 		fmt.Println("error get queueId: " + tableQr.Id, myErr.Error())
 	***REMOVED***
 	
-	fmt.Printf("response existQueueQr: %#v\n", existQueueQr)
+	fmt.Printf("response existQueueQr: %#v\n", existingQueueQr)
 	
-	if (existQueueQr != models.TableQueue***REMOVED******REMOVED***) ***REMOVED***
+	if (existingQueueQr != nil) ***REMOVED***
 		return nil, errors.New("The " + tableQr.Id + " table is on the queue")
 	***REMOVED***
 	
-	
-	fbErr := ref.Child(tableQr.Id).
-		Set(context.Background(), &queueTable)
+	_, fbErr := refQueue.Doc(tableQr.Id).
+		Set(context.Background(), queueTable)
+		
 	if(fbErr != nil) ***REMOVED***
 		fmt.Println(err, "[AddQRTableToQueue] error when insert to firebase")
 		return nil, err
@@ -61,8 +61,9 @@ func RemoveTableFromQueue(tableQrId string) (*string, error) ***REMOVED***
 		return nil, err
 	***REMOVED***
 	
-	ref := fb.Client.NewRef("queue_table")
-	fbErr := ref.Child(tableQr.Id).
+	ref := fb.Client.Collection("merchant" )
+	refQueue := ref.Doc(tableQr.MerchantId).Collection("queue")
+	_, fbErr := refQueue.Doc(tableQr.Id).
 		Delete(context.Background())
 		
 	if(fbErr != nil) ***REMOVED***

@@ -12,7 +12,7 @@ import (
 
 func SaveTableQr(request SaveTableQrRequest) (*SaveTableQrResponse, error) ***REMOVED***
 	qrTableId := primitive.NewObjectID()
-	qrTableWebLink := fmt.Sprintf("%s/qr-table/%s", viper.Get("ANT3_WEB_URL"), qrTableId.Hex())
+	qrTableWebLink := fmt.Sprintf("%s/table-info/%s", viper.Get("ANT3_WEB_URL"), qrTableId.Hex())
 	
 	png, err := qrcode.Encode(qrTableWebLink, qrcode.High, 256)
 	if (err != nil) ***REMOVED***
