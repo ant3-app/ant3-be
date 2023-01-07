@@ -1,10 +1,10 @@
 package controller
 
-type tableQrRequest struct ***REMOVED***
+type tableQrRequest struct {
 	MerchantId string `json:"merchantId"`
 	TableName string `json:"tableName"`
-***REMOVED***
+}
 
-type tableQueueRequest struct ***REMOVED***
+type tableQueueRequest struct {
 	TableQrId string `json:"tableQrId"`
-***REMOVED***
+}

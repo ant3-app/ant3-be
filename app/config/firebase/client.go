@@ -9,13 +9,13 @@ import (
 
 var Client *firestore.Client
 
-func InitClient() error ***REMOVED***
+func InitClient() error {
 	InitFirebase()
 	client, err := App.Firestore(context.Background())
-	if(err != nil) ***REMOVED***
+	if(err != nil) {
 		fmt.Println(err, "[InitClient] error init firebase client")
 		return err
-	***REMOVED***
+	}
 	Client = client
 	return nil
-***REMOVED***
+}

@@ -1,12 +1,12 @@
 package service
 
-type SaveTableQrRequest struct ***REMOVED***
+type SaveTableQrRequest struct {
 	MerchantId string
 	TableName string
-***REMOVED***
+}
 
-type SaveTableQrResponse struct ***REMOVED***
+type SaveTableQrResponse struct {
 	FileId string
 	MerchantId string
 	Id string
-***REMOVED***
+}

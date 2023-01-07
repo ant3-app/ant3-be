@@ -10,16 +10,16 @@ import (
 	"github.com/spf13/viper"
 )
 
-func initLoadEnv() ***REMOVED***
+func initLoadEnv() {
 	viper.AddConfigPath("../../")
 	viper.SetConfigFile(".env")
 	err := viper.ReadInConfig()
-	if err != nil ***REMOVED***
+	if err != nil {
     log.Fatalf("Error while reading config file %s", err)
-  ***REMOVED***
-***REMOVED***
+  }
+}
 
-func main() ***REMOVED***
+func main() {
 	initLoadEnv()
 	
 	mongo.ConnectDatabase()
@@ -31,4 +31,4 @@ func main() ***REMOVED***
 	r.POST("qr-table/queue", queue_qr.InsertTableQrToQueue)
 	r.DELETE("qr-table/queue", queue_qr.RemoveTableQrFromQueue)
 	r.Run()
-***REMOVED***
+}

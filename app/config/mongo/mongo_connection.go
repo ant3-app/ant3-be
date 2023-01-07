@@ -10,13 +10,13 @@ import (
 
 var DB *mongo.Database
 
-func ConnectDatabase() ***REMOVED***
+func ConnectDatabase() {
 	uri := viper.Get("MONGODB_URI").(string)
 	println(uri, "uri")
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(uri))
-	if err != nil ***REMOVED***
+	if err != nil {
 		panic(err)
-	***REMOVED***
+	}
 	
 	DB = client.Database("ant3")
-***REMOVED***
+}

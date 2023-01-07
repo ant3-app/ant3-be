@@ -11,14 +11,14 @@ import (
 
 var App *firebase.App
 
-func InitFirebase() ***REMOVED***
-	config := &firebase.Config***REMOVED***ProjectID: viper.GetString("FIREBASE_PROJECT_ID")***REMOVED***
+func InitFirebase() {
+	config := &firebase.Config{ProjectID: viper.GetString("FIREBASE_PROJECT_ID")}
 	opt := option.WithCredentialsFile("./service-account.json")
 
 	app, err := firebase.NewApp(context.Background(), config, opt)
-	if err != nil ***REMOVED***
+	if err != nil {
 		log.Fatalf("error initializing app: %v\n", err)
-	***REMOVED***
+	}
 	
 	App = app
-***REMOVED***
+}

@@ -11,104 +11,128 @@ import (
 	"cloud.google.com/go/firestore"
 )
 
-func getLastDocNum(trx *firestore.Transaction, colRef *firestore.CollectionRef) (*int64, error) ***REMOVED***
-	query := colRef.OrderBy("createdAt", firestore.Desc).Limit(1)
-	lastDoc, err := trx.Documents(query).Next()
-	if(err != nil) ***REMOVED***
-		return nil, err
-	***REMOVED***
-	
-	numberLastDoc := lastDoc.Data()["number"].(int64)
-	
-	return &numberLastDoc, nil
-***REMOVED***
+const (
+	YYYY_MM_DD = "2006-01-02"
+	MERCHANT = "merchant"
+	QUEUE = "queue"
+	QUEUE_COUNT = "queue_count"
+)
 
 func validateGenerateNewQueue(
 	trx *firestore.Transaction, 
 	docRef *firestore.DocumentRef, 
 	tableQrId string,
-) (bool) ***REMOVED***
+) (bool) {
 	doc, err := trx.Get(docRef)
-	if(err != nil) ***REMOVED***
+	if(err != nil) {
 		fmt.Println("error get queueId: " + tableQrId, err.Error())
-	***REMOVED***
+	}
 	
 	// Note: try to validate using firebase rules
 	existingQueueQr := doc.Data()
-	if (existingQueueQr != nil) ***REMOVED***
+	if (existingQueueQr != nil) {
 		return false
 		
-	***REMOVED***
+	}
 	fmt.Printf("response existQueueQr: %#v\n", existingQueueQr)
 	return true
-***REMOVED***
+}
 
-func AddTableQrToQueue(tableQrId string) (*string, error) ***REMOVED***
+
+func getQueueCount(
+	trx *firestore.Transaction,
+	colMerchant *firestore.CollectionRef,
+	merchantId string,
+	date time.Time,
+) (*int64, error) {
+	refQueueCount := colMerchant.Doc(merchantId).Collection(QUEUE_COUNT)
+	docRefQueueCount := refQueueCount.Doc(date.Format(YYYY_MM_DD))
+	
+	queueCountRef, getQueueCountErr := trx.Get(docRefQueueCount)
+	var incrementedNum int64 = 1
+	
+	if (getQueueCountErr == nil) {
+		incrementedNum = queueCountRef.Data()["number"].(int64) + 1
+	}
+	
+	err := trx.Set(docRefQueueCount, map[string]interface{} {
+		"number": incrementedNum,
+	})
+	
+	if (err != nil) {
+		fmt.Printf("[ERROR] Failed to set: %#v \n", docRefQueueCount)
+		return nil, err
+	}
+	return &incrementedNum, nil
+}
+
+func AddTableQrToQueue(tableQrId string) (*string, error) {
+	now := time.Now().UTC()
 	tableQr, err := repository.GetOne(tableQrId)
-	if(err != nil) ***REMOVED***
+	if(err != nil) {
 		fmt.Println(err.Error(), "[AddQRTableToQueue] error when get queue QR Data")
 		return nil, err
-	***REMOVED***
+	}
+	colMerchant := fb.Client.Collection(MERCHANT)
 		
-	addTableQrToQueueTransaction := func(ctx context.Context, trx *firestore.Transaction) error ***REMOVED***
-		colMerchant := fb.Client.Collection("merchant")
-		refQueue := colMerchant.Doc(tableQr.MerchantId).Collection("queue")
+	addTableQrToQueueTransaction := func(ctx context.Context, trx *firestore.Transaction) error {
+		
+		refQueue := colMerchant.Doc(tableQr.MerchantId).Collection(QUEUE)
 		docRefQueue := refQueue.Doc(tableQr.Id)
 		
-		lastDocNumber, err := getLastDocNum(trx, refQueue)
-		if (err != nil) ***REMOVED***
-			return err
-		***REMOVED***
+		isAbleToGenerateNewQueue := validateGenerateNewQueue(trx, docRefQueue, tableQr.Id)
+		if (!isAbleToGenerateNewQueue) {
+			return errors.New("The " + tableQrId + " table is on the queue")
+		}
 		
-		now := time.Now().UTC()
-	
-		var queueTable =  map[string]interface***REMOVED******REMOVED*** ***REMOVED***
+		queueCountNumber, err := getQueueCount(trx, colMerchant, tableQr.MerchantId, now)
+		if (err != nil) {
+			return err
+		}
+		
+		var queueTable =  map[string]interface{} {
 			"createdAt": now,
 			"updatedAt": now,
 			"name": tableQr.Name,
-			"number": *lastDocNumber + 1,
-		***REMOVED***
+			"number": &queueCountNumber,
+		}
 		fmt.Printf("response queueTable: %#v\n", queueTable)
 		
-		isAbleToGenerateNewQueue := validateGenerateNewQueue(trx, docRefQueue, tableQr.Id)
-		if (!isAbleToGenerateNewQueue) ***REMOVED***
-			return errors.New("The " + tableQrId + " table is on the queue")
-		***REMOVED***
-		
 		fbErr := trx.Set(docRefQueue, queueTable)
-		if(fbErr != nil) ***REMOVED***
+		if(fbErr != nil) {
+			fmt.Printf("[ERROR] Failed to set: %#v \n", docRefQueue)
 			return fbErr
-		***REMOVED***
+		}
 			
 		return nil
-	***REMOVED***
+	}
 	
 	errTrx := fb.Client.RunTransaction(context.Background(), addTableQrToQueueTransaction)
 		
-	if(errTrx != nil) ***REMOVED***
+	if(errTrx != nil) {
 		fmt.Println(errTrx, "[AddQRTableToQueue] error when insert to firebase")
 		return nil, errTrx
-	***REMOVED***
+	}
 	return &tableQr.Id, nil
-***REMOVED***
+}
 
 
-func RemoveTableFromQueue(tableQrId string) (*string, error) ***REMOVED***
+func RemoveTableFromQueue(tableQrId string) (*string, error) {
 	tableQr, err := repository.GetOne(tableQrId)
-	if(err != nil) ***REMOVED***
+	if(err != nil) {
 		fmt.Println(err.Error(), "[AddQRTableToQueue] error when get queue QR Data")
 		return nil, err
-	***REMOVED***
+	}
 	
-	ref := fb.Client.Collection("merchant" )
-	refQueue := ref.Doc(tableQr.MerchantId).Collection("queue")
+	ref := fb.Client.Collection(MERCHANT)
+	refQueue := ref.Doc(tableQr.MerchantId).Collection(QUEUE)
 	_, fbErr := refQueue.Doc(tableQr.Id).
 		Delete(context.Background())
 		
-	if(fbErr != nil) ***REMOVED***
+	if(fbErr != nil) {
 		fmt.Println(err, "[AddQRTableToQueue] error when delete data from firebase")
 		return nil, err
-	***REMOVED***
+	}
 	
 	return &tableQr.Id, nil
-***REMOVED***
+}
